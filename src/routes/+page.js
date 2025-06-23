@@ -8,7 +8,7 @@ export const load = async ({ fetch, params }) => {
 			const error = await res.json();
 			console.error(error);
 		}
-	} catch (e) {
-		console.error(e);
+	} catch (error) {
+		console.error(error);
 	}
 };
