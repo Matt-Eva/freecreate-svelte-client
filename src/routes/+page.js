@@ -6,7 +6,7 @@ export const load = async ({ fetch, params }) => {
 			console.log(data);
 		} else {
 			const error = await res.json();
-			console.error(e);
+			console.error(error);
 		}
 	} catch (e) {
 		console.error(e);
