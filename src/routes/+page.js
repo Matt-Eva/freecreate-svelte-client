@@ -1,4 +1,5 @@
 export const load = async ({ fetch, params }) => {
+	console.log('browser or server?');
 	try {
 		const res = await fetch('/api/hello');
 		if (res.ok) {
