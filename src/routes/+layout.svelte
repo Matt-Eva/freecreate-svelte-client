@@ -4,8 +4,13 @@
 
 <header>
 	<nav>
-		<a href="/">home</a>
-		<a href="/write">write</a>
+		<h1><a href="/">FreeCreate</a></h1>
 	</nav>
 </header>
+<aside>
+	<ul>
+		<li><a href="/write">Write</a></li>
+		<li><a href="/my-writing">My writing</a></li>
+	</ul>
+</aside>
 {@render children()}
