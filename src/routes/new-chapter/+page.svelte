@@ -1,5 +1,5 @@
 <script>
-	import './quillStyles.css';
+	import '../quillStyles.css';
 	import { onMount, onDestroy } from 'svelte';
 
 	let editorElement;
@@ -24,6 +24,12 @@
 	});
 </script>
 
+<div>
+	<h2><a href="/edit-writing">Book title</a></h2>
+</div>
+<div>
+	<input type="text" placeholder="chapter title" />
+</div>
 <div>
 	<div bind:this={editorElement} id="editor"></div>
 </div>

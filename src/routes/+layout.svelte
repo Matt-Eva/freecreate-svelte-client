@@ -8,9 +8,23 @@
 	</nav>
 </header>
 <aside>
-	<ul>
-		<li><a href="/write">Write</a></li>
-		<li><a href="/my-writing">My writing</a></li>
-	</ul>
+	<nav>
+		<ul>
+			<li>
+				<a href="/">Browse</a>
+				<!-- <ul>
+					<li><a href="/">Fiction</a></li>
+					<li><a href="/essay-blog">Essays & Blogs</a></li>
+					<li><a href="/poetry">Poetry</a></li>
+				</ul> -->
+			</li>
+			<li><a href="/write">Write</a></li>
+			<li><a href="/my-writing">My writing</a></li>
+
+			<li>
+				<a href="/my-library">My Library</a>
+			</li>
+		</ul>
+	</nav>
 </aside>
 {@render children()}
