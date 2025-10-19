@@ -5,6 +5,8 @@
 <header>
 	<nav>
 		<h1><a href="/">FreeCreate</a></h1>
+		<a href="/login">login</a>
+		<a href="/profile">profile</a>
 	</nav>
 </header>
 <aside>
@@ -19,8 +21,7 @@
 				</ul> -->
 			</li>
 			<li><a href="/write">Write</a></li>
-			<li><a href="/my-writing">My writing</a></li>
-
+			<li><a href="/my-writing">My Writing</a></li>
 			<li>
 				<a href="/my-library">My Library</a>
 			</li>

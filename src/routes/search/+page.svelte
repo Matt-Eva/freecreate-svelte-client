@@ -35,8 +35,8 @@
 			<label for="no">No Topic</label>
 			<input type="checkbox" name="art" />
 			<label for="art">Art</label>
-			<input type="checkbox" name="adventure" />
-			<label for="adventure">Adventure</label>
+			<input type="checkbox" name="comedy" />
+			<label for="comedy">Comedy</label>
 			<input type="checkbox" name="comedy" />
 			<label for="comedy">Comedy</label>
 			<input type="checkbox" name="drama" />
