@@ -8,8 +8,6 @@
 	onMount(async () => {
 		const { default: Quill } = await import('quill');
 
-		await import('quill/dist/quill.snow.css');
-
 		const quill = new Quill(editorElement, {
 			theme: 'snow',
 			modules: {

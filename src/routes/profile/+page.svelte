@@ -3,7 +3,8 @@
 	const apiBase = data.props.apiBase;
 	async function logout() {
 		await fetch(apiBase + '/logout', {
-			credentials: 'include'
+			credentials: 'include',
+			method: 'Delete'
 		});
 	}
 </script>
