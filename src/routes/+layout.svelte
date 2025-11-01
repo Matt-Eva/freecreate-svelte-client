@@ -2,8 +2,6 @@
 	import { setContext } from 'svelte';
 	let { children, data } = $props();
 	let user = $state({ loggedIn: data.props.user });
-	console.log('user', user);
-
 	setContext('user', user);
 </script>
 
