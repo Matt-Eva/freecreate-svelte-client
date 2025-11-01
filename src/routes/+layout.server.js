@@ -2,7 +2,7 @@ import { API_URL } from '$env/static/private';
 
 export async function load({ fetch }) {
 	const apiBase = API_URL;
-	let user;
+	let user = false;
 
 	try {
 		console.log('running reauth');

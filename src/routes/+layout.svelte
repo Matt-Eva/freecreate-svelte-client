@@ -1,12 +1,20 @@
 <script>
-	let { children } = $props();
+	import { setContext } from 'svelte';
+	let { children, data } = $props();
+	let user = $state({ loggedIn: data.props.user });
+	console.log('user', user);
+
+	setContext('user', user);
 </script>
 
 <header>
 	<nav>
 		<h1><a href="/">FreeCreate</a></h1>
-		<a href="/login">login</a>
-		<a href="/profile">profile</a>
+		{#if !user.loggedIn}
+			<a href="/login">login</a>
+		{:else}
+			<a href="/profile">profile</a>
+		{/if}
 	</nav>
 </header>
 <aside>

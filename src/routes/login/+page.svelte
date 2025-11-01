@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation';
+	import { getContext } from 'svelte';
 	import birthdayChecker from '$lib/birthdayChecker.js';
 	let { data } = $props();
 	const apiBase = data.props.apiBase;
@@ -12,6 +14,8 @@
 	const startingBirthdayErrorMessages = { year: '', month: '', day: '' };
 	let birthdayErrorMessages = $state(startingBirthdayErrorMessages);
 
+	let user = getContext('user');
+
 	async function login(e) {
 		e.preventDefault();
 		await fetch(apiBase + '/login', {
@@ -22,6 +26,8 @@
 			},
 			body: JSON.stringify({ email: '' })
 		});
+		user.loggedIn = true;
+		goto('/profile');
 	}
 
 	async function signup(e) {
