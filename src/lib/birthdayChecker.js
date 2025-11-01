@@ -1,29 +1,33 @@
-function dateChecker(day, month, year) {
-	const errors = [];
+function birthdayChecker(day, month, year) {
+	const errors = {
+		year: '',
+		month: '',
+		day: ''
+	};
 
 	const numberYear = parseInt(year);
 	if (Number.isNaN(numberYear)) {
 		const error = new Error('please enter a valid year');
-		errors.push(error);
+		errors.year = error;
 	} else {
 		const currentDate = new Date();
 		const currentYear = currentDate.getFullYear();
 		if (numberYear < 1900 || numberYear > currentYear) {
-			const e = new Error('please enter a valid year');
-			errors.push(e);
+			const error = new Error('please enter a valid year');
+			errors.year = error;
 		}
 	}
 
 	const minDays = [
-		'01',
-		'02',
-		'03',
-		'04',
-		'05',
-		'06',
-		'07',
-		'08',
-		'09',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
 		'10',
 		'11',
 		'12',
@@ -48,15 +52,15 @@ function dateChecker(day, month, year) {
 	const maxDays = midDays.concat(['31']);
 
 	const months = {
-		'01': maxDays,
-		'02': minDays,
-		'03': maxDays,
-		'04': midDays,
-		'05': maxDays,
-		'06': midDays,
-		'07': maxDays,
-		'08': maxDays,
-		'09': midDays,
+		1: maxDays,
+		2: minDays,
+		3: maxDays,
+		4: midDays,
+		5: maxDays,
+		6: midDays,
+		7: maxDays,
+		8: maxDays,
+		9: midDays,
 		10: maxDays,
 		11: midDays,
 		12: maxDays
@@ -66,24 +70,24 @@ function dateChecker(day, month, year) {
 	if (days) {
 		const foundDay = days.find((d) => d === day);
 		if (!foundDay) {
-			const e = new Error('please enter a valid day');
-			errors.push(e);
+			const error = new Error('please enter a valid day');
+			errors.day = error;
 		}
 	} else {
 		const e = new Error('please enter a valid month');
-		errors.push(e);
+		errors.month = e;
 		const foundDay = maxDays.find((d) => d === day);
 		if (!foundDay) {
 			const e = new Error('please enter a valid day');
-			errors.push(e);
+			errors.day = e;
 		}
 	}
 
-	if (errors.length > 0) {
-		throw errors;
+	for (const key in errors) {
+		if (errors[key] !== '') {
+			throw errors;
+		}
 	}
-
-	return `${month}-${day}-${year}`;
 }
 
-export default dateChecker;
+export default birthdayChecker;
