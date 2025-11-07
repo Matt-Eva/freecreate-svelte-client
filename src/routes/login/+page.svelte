@@ -24,16 +24,20 @@
 
 	async function login(e) {
 		e.preventDefault();
-		await fetch(apiBase + '/login', {
-			credentials: 'include',
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ email: '' })
-		});
-		user.loggedIn = true;
-		goto('/profile');
+		try {
+			await fetch(apiBase + '/login', {
+				credentials: 'include',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ email: '' })
+			});
+			user.loggedIn = true;
+			goto('/profile');
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	async function signup(e) {
