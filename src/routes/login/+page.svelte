@@ -25,7 +25,7 @@
 	async function login(e) {
 		e.preventDefault();
 		try {
-			await fetch(apiBase + '/login', {
+			const res = await fetch(apiBase + '/login', {
 				credentials: 'include',
 				method: 'POST',
 				headers: {
@@ -33,8 +33,10 @@
 				},
 				body: JSON.stringify({ email: '' })
 			});
-			user.loggedIn = true;
-			goto('/profile');
+			if (res.ok) {
+				user.loggedIn = true;
+				// goto('/profile');
+			}
 		} catch (error) {
 			console.error(error);
 		}
