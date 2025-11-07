@@ -35,7 +35,7 @@
 			});
 			if (res.ok) {
 				user.loggedIn = true;
-				// goto('/profile');
+				goto('/profile');
 			}
 		} catch (error) {
 			console.error(error);
@@ -56,7 +56,7 @@
 		}
 
 		try {
-			await fetch(apiBase + '/signup', {
+			const res = await fetch(apiBase + '/signup', {
 				credentials: 'include',
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -67,8 +67,10 @@
 					birthYear: parseInt(birthYear)
 				})
 			});
-			user.loggedIn = true;
-			goto('/profile');
+			if (res.ok) {
+				user.loggedIn = true;
+				goto('/profile');
+			}
 		} catch (error) {
 			console.error(error);
 		}
