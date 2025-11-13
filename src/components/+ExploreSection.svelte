@@ -20,7 +20,7 @@
 					loadSection();
 				}, delay);
 			} else if (loaded) {
-				console.log(section.title, loaded);
+				// console.log(section.title, loaded);
 			}
 		});
 	}
