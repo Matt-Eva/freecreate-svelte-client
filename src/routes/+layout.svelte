@@ -1,8 +1,14 @@
 <script>
-	import { setContext } from 'svelte';
 	let { children, data } = $props();
+
+	import { setContext } from 'svelte';
 	let user = $state({ loggedIn: data.props.user });
 	setContext('user', user);
+
+	let searchState = $state({
+		writingType: 'All Writing'
+	});
+	setContext('searchState', searchState);
 </script>
 
 <header>

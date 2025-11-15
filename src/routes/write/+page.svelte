@@ -1,4 +1,12 @@
-<form>
+<script>
+	import { goto } from '$app/navigation';
+	function handleSubmit(e) {
+		e.preventDefault();
+		goto('/edit-writing');
+	}
+</script>
+
+<form onsubmit={handleSubmit}>
 	<label for="title">Title *</label>
 	<input type="text" name="title" />
 	<label for="creator">Creator *</label>
