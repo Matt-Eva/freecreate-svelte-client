@@ -6,7 +6,9 @@
 	setContext('user', user);
 
 	let searchState = $state({
-		writingType: 'All Writing'
+		writingType: 'All Writing',
+		datePosted: 'All Time',
+		tags: []
 	});
 	setContext('searchState', searchState);
 </script>

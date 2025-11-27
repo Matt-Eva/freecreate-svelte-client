@@ -5,6 +5,7 @@
 	const apiBase = data.props.apiBase;
 	let user = getContext('user');
 	let deletePopup;
+	let creatorName = $state('');
 
 	onMount(() => {
 		if (!user.loggedIn) {
@@ -45,6 +46,30 @@
 	function closeDeletePopup() {
 		deletePopup.close();
 	}
+
+	async function createCreator(e) {
+		e.preventDefault();
+		console.log('running submit');
+		try {
+			const res = await fetch(apiBase + '/creator', {
+				credentials: 'include',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					creatorName
+				})
+			});
+			console.log(res);
+			if (res.ok) {
+				const data = await res.json();
+				console.log(data);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
 </script>
 
 <div>
@@ -56,4 +81,9 @@
 		<button onclick={deleteAccount}>yes</button>
 		<button onclick={closeDeletePopup}>no</button>
 	</dialog>
+	<form onsubmit={createCreator}>
+		<label for="new-creator">Add New Creator Profile</label>
+		<input type="text" name="new-creator" bind:value={creatorName} />
+		<input type="submit" value="create" />
+	</form>
 </div>
