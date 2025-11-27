@@ -1,7 +1,6 @@
 export const load = async ({ fetch, parent }) => {
 	const data = await parent();
 	const apiBase = data.props.apiBase;
-	console.log(apiBase);
 
 	// try {
 	// 	const res = await fetch(apiBase + '/hello');
