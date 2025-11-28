@@ -1,8 +1,8 @@
 <script>
 	let { children, data } = $props();
-
 	import { setContext } from 'svelte';
-	let user = $state({ loggedIn: data.props.user });
+
+	let user = $state({ loggedIn: data.user });
 	setContext('user', user);
 
 	let searchState = $state({
@@ -11,6 +11,9 @@
 		tags: []
 	});
 	setContext('searchState', searchState);
+
+	let userCreators = $state({ userCreators: [], isFetched: false });
+	setContext('userCreators', userCreators);
 </script>
 
 <header>

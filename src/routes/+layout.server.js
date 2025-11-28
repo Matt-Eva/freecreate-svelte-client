@@ -17,9 +17,7 @@ export async function load({ fetch }) {
 		console.error(e);
 	}
 	return {
-		props: {
-			apiBase,
-			user
-		}
+		apiBase,
+		user
 	};
 }

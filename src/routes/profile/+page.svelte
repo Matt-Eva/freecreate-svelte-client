@@ -1,8 +1,10 @@
 <script>
 	import { setContext, getContext, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import UserCreatorCard from '../../components/+UserCreatorCard.svelte';
 	const { data } = $props();
-	const apiBase = data.props.apiBase;
+	const apiBase = data.apiBase;
+	let userCreators = $state(data.creators);
 	let user = getContext('user');
 	let deletePopup;
 	let creatorName = $state('');
@@ -86,4 +88,7 @@
 		<input type="text" name="new-creator" bind:value={creatorName} />
 		<input type="submit" value="create" />
 	</form>
+	{#each userCreators as creator}
+		<UserCreatorCard {creator} />
+	{/each}
 </div>
