@@ -3,7 +3,7 @@
 	import { getContext, onMount } from 'svelte';
 	import birthdayChecker from '$lib/birthdayChecker.js';
 	let { data } = $props();
-	const apiBase = data.props.apiBase;
+	const apiBase = data.apiBase;
 	let showLogin = $state(false);
 	let loginEmail = $state('');
 	let signupEmail = $state('');

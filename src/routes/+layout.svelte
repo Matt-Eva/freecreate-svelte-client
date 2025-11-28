@@ -14,6 +14,9 @@
 
 	let userCreators = $state({ userCreators: [], isFetched: false });
 	setContext('userCreators', userCreators);
+
+	let testContext = $state({ test: 'test' });
+	setContext('testContext', testContext);
 </script>
 
 <header>

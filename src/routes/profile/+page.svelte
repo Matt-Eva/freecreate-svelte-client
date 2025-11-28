@@ -1,6 +1,7 @@
 <script>
 	import { setContext, getContext, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 	import UserCreatorCard from '../../components/+UserCreatorCard.svelte';
 	const { data } = $props();
 	const apiBase = data.apiBase;
@@ -8,12 +9,25 @@
 	let user = getContext('user');
 	let deletePopup;
 	let creatorName = $state('');
+	let testState = $state('test');
+	$inspect(testState);
 
-	onMount(() => {
+	let testContext = getContext('testContext');
+	$inspect(testContext);
+
+	if (browser) {
 		if (!user.loggedIn) {
 			goto('/login');
 		}
-	});
+		testState = 'confirmend';
+		testContext.test = 'reset';
+	}
+
+	// onMount(() => {
+	// 	if (!user.loggedIn) {
+	// 		goto('/login');
+	// 	}
+	// });
 
 	async function logout() {
 		try {
