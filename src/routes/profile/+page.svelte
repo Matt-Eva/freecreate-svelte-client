@@ -20,15 +20,12 @@
 						const data = await res.json();
 						userCreators.creators = data.creators;
 						userCreators.isFetched = true;
-						console.log('userCreators fetched', userCreators);
 					}
 				} catch (error) {
 					console.error(error);
 				}
 			}
 			fetchUserCreators();
-		} else {
-			console.log('userCreators already fetched', userCreators);
 		}
 	}
 
@@ -86,7 +83,7 @@
 			if (res.ok) {
 				const data = await res.json();
 				console.log(data);
-				userCreators.creators = [...userCreators.creators, data];
+				userCreators.creators.push(data);
 			}
 		} catch (error) {
 			console.error(error);
@@ -109,6 +106,6 @@
 		<input type="submit" value="create" />
 	</form>
 	{#each userCreators.creators as creator}
-		<UserCreatorCard {creator} />
+		<UserCreatorCard {creator} {apiBase} />
 	{/each}
 </div>
