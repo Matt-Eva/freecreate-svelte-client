@@ -1,7 +1,15 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 	import { getContext, onMount } from 'svelte';
 	import birthdayChecker from '$lib/birthdayChecker.js';
+	let user = getContext('user');
+
+	if (browser && user.loggedIn === true) {
+		console.log('browser running');
+		goto('/profile');
+	}
+
 	let { data } = $props();
 	const apiBase = data.apiBase;
 	let showLogin = $state(false);
@@ -13,14 +21,6 @@
 	let birthYear = $state('');
 	const startingBirthdayErrorMessages = { year: '', month: '', day: '' };
 	let birthdayErrorMessages = $state(startingBirthdayErrorMessages);
-
-	let user = getContext('user');
-
-	onMount(() => {
-		if (user.loggedIn === true) {
-			goto('/profile');
-		}
-	});
 
 	async function login(e) {
 		e.preventDefault();
