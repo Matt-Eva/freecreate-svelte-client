@@ -1,8 +1,8 @@
 <script>
-	const props = $props();
+	const { creator } = $props();
 	// console.log('user creator card data', props.creator);
 </script>
 
 <article>
-	<h3>{props.creator.Name}</h3>
+	<h3>{creator.name}</h3>
 </article>

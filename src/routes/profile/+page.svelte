@@ -3,31 +3,37 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import UserCreatorCard from '../../components/+UserCreatorCard.svelte';
+
 	const { data } = $props();
 	const apiBase = data.apiBase;
-	let userCreators = $state(data.creators);
+
 	let user = getContext('user');
-	let deletePopup;
-	let creatorName = $state('');
-	let testState = $state('test');
-	$inspect(testState);
-
-	let testContext = getContext('testContext');
-	$inspect(testContext);
-
-	if (browser) {
-		if (!user.loggedIn) {
-			goto('/login');
+	let userCreators = getContext('userCreators');
+	if (browser && !user.loggedIn) {
+		goto('/login');
+	} else if (browser && user.loggedIn) {
+		if (!userCreators.isFetched) {
+			async function fetchUserCreators() {
+				try {
+					const res = await fetch(apiBase + '/user-creators', { credentials: 'include' });
+					if (res.ok) {
+						const data = await res.json();
+						userCreators.creators = data.creators;
+						userCreators.isFetched = true;
+						console.log('userCreators fetched', userCreators);
+					}
+				} catch (error) {
+					console.error(error);
+				}
+			}
+			fetchUserCreators();
+		} else {
+			console.log('userCreators already fetched', userCreators);
 		}
-		testState = 'confirmend';
-		testContext.test = 'reset';
 	}
 
-	// onMount(() => {
-	// 	if (!user.loggedIn) {
-	// 		goto('/login');
-	// 	}
-	// });
+	let deletePopup;
+	let creatorName = $state('');
 
 	async function logout() {
 		try {
@@ -77,10 +83,10 @@
 					creatorName
 				})
 			});
-			console.log(res);
 			if (res.ok) {
 				const data = await res.json();
 				console.log(data);
+				userCreators.creators = [...userCreators.creators, data];
 			}
 		} catch (error) {
 			console.error(error);
@@ -102,7 +108,7 @@
 		<input type="text" name="new-creator" bind:value={creatorName} />
 		<input type="submit" value="create" />
 	</form>
-	{#each userCreators as creator}
+	{#each userCreators.creators as creator}
 		<UserCreatorCard {creator} />
 	{/each}
 </div>
