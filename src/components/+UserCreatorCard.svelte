@@ -1,5 +1,8 @@
 <script>
+	import { getContext } from 'svelte';
 	const { creator, apiBase } = $props();
+	let userCreators = getContext('userCreators');
+
 	async function deleteCreator() {
 		try {
 			const res = await fetch(apiBase + `/creator/${creator.id}`, {
@@ -8,6 +11,7 @@
 			});
 			if (res.ok) {
 				console.log(res);
+				userCreators.creators = userCreators.creators.filter((c) => c.id !== creator.id);
 			}
 		} catch (e) {
 			console.error(e);
