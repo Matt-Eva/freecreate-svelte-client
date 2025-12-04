@@ -1,7 +1,7 @@
 <script>
-	import { getContext } from 'svelte';
+	import { getUserCreators, removeUserCreator } from '../state/userCreators.svelte';
 	const { creator, apiBase } = $props();
-	let userCreators = getContext('userCreators');
+	let userCreators = getUserCreators();
 
 	async function deleteCreator() {
 		try {
@@ -10,7 +10,7 @@
 				credentials: 'include'
 			});
 			if (res.ok) {
-				userCreators.creators = userCreators.creators.filter((c) => c.id !== creator.id);
+				removeUserCreator(creator.id);
 			}
 		} catch (e) {
 			console.error(e);

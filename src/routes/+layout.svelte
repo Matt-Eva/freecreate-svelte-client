@@ -3,14 +3,12 @@
 	import { setContext } from 'svelte';
 	import { setUser, getUser } from '../state/user.svelte.js';
 	import { setSearch, getSearch } from '../state/search.svelte.js';
+	import { setUserCreators } from '../state/userCreators.svelte.js';
 
 	setUser(data.user);
 	let user = getUser();
-
 	setSearch();
-
-	let userCreators = $state({ creators: [], isFetched: false });
-	setContext('userCreators', userCreators);
+	setUserCreators();
 </script>
 
 <header>

@@ -1,6 +1,12 @@
 <script>
 	import { onMount, getContext } from 'svelte';
 	import { getUser, logoutUser } from '../../state/user.svelte';
+	import {
+		getUserCreators,
+		populateUserCreators,
+		addUserCreator,
+		clearUserCreators
+	} from '../../state/userCreators.svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import UserCreatorCard from '../../components/+UserCreatorCard.svelte';
@@ -9,7 +15,7 @@
 	const apiBase = data.apiBase;
 
 	let user = getUser();
-	let userCreators = getContext('userCreators');
+	let userCreators = getUserCreators();
 	if (browser && !user.loggedIn) {
 		goto('/login');
 	} else if (browser && user.loggedIn) {
@@ -19,8 +25,7 @@
 					const res = await fetch(apiBase + '/user-creators', { credentials: 'include' });
 					if (res.ok) {
 						const data = await res.json();
-						userCreators.creators = data.creators;
-						userCreators.isFetched = true;
+						populateUserCreators(data.creators);
 					}
 				} catch (error) {
 					console.error(error);
@@ -41,6 +46,7 @@
 			});
 			if (res.ok) {
 				logoutUser();
+				clearUserCreators();
 				goto('/');
 			}
 		} catch (error) {
@@ -56,6 +62,7 @@
 			});
 			if (res.ok) {
 				logoutUser();
+				clearUserCreators();
 				goto('/');
 			}
 		} catch (error) {
@@ -88,7 +95,8 @@
 			if (res.ok) {
 				const data = await res.json();
 				console.log(data);
-				userCreators.creators.push(data);
+				addUserCreator(data);
+				creatorName = '';
 			}
 		} catch (error) {
 			console.error(error);
