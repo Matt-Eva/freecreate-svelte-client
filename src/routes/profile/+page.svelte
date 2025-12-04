@@ -1,5 +1,6 @@
 <script>
-	import { setContext, getContext, onMount } from 'svelte';
+	import { onMount, getContext } from 'svelte';
+	import { getUser, logoutUser } from '../../state/user.svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import UserCreatorCard from '../../components/+UserCreatorCard.svelte';
@@ -7,7 +8,7 @@
 	const { data } = $props();
 	const apiBase = data.apiBase;
 
-	let user = getContext('user');
+	let user = getUser();
 	let userCreators = getContext('userCreators');
 	if (browser && !user.loggedIn) {
 		goto('/login');
@@ -39,7 +40,7 @@
 				method: 'DELETE'
 			});
 			if (res.ok) {
-				user.loggedIn = false;
+				logoutUser();
 				goto('/');
 			}
 		} catch (error) {
@@ -54,7 +55,7 @@
 				method: 'DELETE'
 			});
 			if (res.ok) {
-				user.loggedIn = false;
+				logoutUser();
 				goto('/');
 			}
 		} catch (error) {

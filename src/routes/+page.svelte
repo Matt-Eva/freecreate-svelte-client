@@ -4,9 +4,6 @@
 	import ExploreCard from '../components/+ExploreCard.svelte';
 	import { getTestState, updateTestState } from '../state/test.svelte';
 
-	let testState = getTestState();
-	$inspect(testState);
-
 	let sections = [
 		{ title: 'Essays & Blogs', delay: 0 },
 		{ title: 'Poetry', delay: 0 },
@@ -35,7 +32,7 @@
 
 <div>
 	<BrowseBar />
-	<button onclick={updateTestState}>reset test state</button>
+
 	<div>
 		{#each sections as section}
 			<ExploreSection {section} />

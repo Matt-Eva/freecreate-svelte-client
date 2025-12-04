@@ -1,12 +1,12 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
-	import { getContext, onMount } from 'svelte';
+	import { onMount } from 'svelte';
+	import { getUser, loginUser } from '../../state/user.svelte.js';
 	import birthdayChecker from '$lib/birthdayChecker.js';
-	let user = getContext('user');
+	let user = getUser();
 
 	if (browser && user.loggedIn === true) {
-		console.log('browser running');
 		goto('/profile');
 	}
 
@@ -34,7 +34,7 @@
 				body: JSON.stringify({ email: '' })
 			});
 			if (res.ok) {
-				user.loggedIn = true;
+				loginUser();
 				goto('/profile');
 			}
 		} catch (error) {

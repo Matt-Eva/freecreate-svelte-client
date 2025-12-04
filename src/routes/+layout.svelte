@@ -1,11 +1,11 @@
 <script>
 	let { children, data } = $props();
 	import { setContext } from 'svelte';
-	import { getTestState, setTestState } from '../state/test.svelte.js';
-	setTestState();
+	import { setUser, getUser } from '../state/user.svelte.js';
 
-	let user = $state({ loggedIn: data.user });
-	setContext('user', user);
+	setUser(data.user);
+	let user = getUser();
+	$inspect(user);
 
 	let searchState = $state({
 		writingType: 'All Writing',
