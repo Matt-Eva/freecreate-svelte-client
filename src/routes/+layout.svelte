@@ -1,6 +1,8 @@
 <script>
 	let { children, data } = $props();
 	import { setContext } from 'svelte';
+	import { getTestState, setTestState } from './store.svelte.js';
+	setTestState();
 
 	let user = $state({ loggedIn: data.user });
 	setContext('user', user);

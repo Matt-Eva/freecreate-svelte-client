@@ -2,6 +2,10 @@
 	import BrowseBar from '../components/+BrowseBar.svelte';
 	import ExploreSection from '../components/+ExploreSection.svelte';
 	import ExploreCard from '../components/+ExploreCard.svelte';
+	import { getTestState, updateTestState } from './store.svelte';
+
+	let testState = getTestState();
+	$inspect(testState);
 
 	let sections = [
 		{ title: 'Essays & Blogs', delay: 0 },
@@ -31,6 +35,7 @@
 
 <div>
 	<BrowseBar />
+	<button onclick={updateTestState}>reset test state</button>
 	<div>
 		{#each sections as section}
 			<ExploreSection {section} />

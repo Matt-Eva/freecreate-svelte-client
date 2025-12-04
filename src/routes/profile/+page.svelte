@@ -34,12 +34,14 @@
 
 	async function logout() {
 		try {
-			await fetch(apiBase + '/logout', {
+			const res = await fetch(apiBase + '/logout', {
 				credentials: 'include',
 				method: 'DELETE'
 			});
-			user.loggedIn = false;
-			goto('/');
+			if (res.ok) {
+				user.loggedIn = false;
+				goto('/');
+			}
 		} catch (error) {
 			console.error(error);
 		}
@@ -47,12 +49,14 @@
 
 	async function deleteAccount() {
 		try {
-			await fetch(apiBase + '/delete-account', {
+			const res = await fetch(apiBase + '/delete-account', {
 				credentials: 'include',
 				method: 'DELETE'
 			});
-			user.loggedIn = false;
-			goto('/');
+			if (res.ok) {
+				user.loggedIn = false;
+				goto('/');
+			}
 		} catch (error) {
 			console.error(error);
 		}
