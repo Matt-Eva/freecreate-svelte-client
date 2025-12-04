@@ -1,10 +1,10 @@
 <script>
 	import BrowseBar from './+BrowseBar.svelte';
-	import { getContext } from 'svelte';
+	import { getSearch } from '../state/search.svelte';
 	let writingType = $state('All Writing');
 	let datePost = $state('All Time');
 	$inspect(writingType);
-	let searchState = getContext('searchState');
+	let searchState = getSearch();
 	$inspect(searchState);
 
 	function search() {

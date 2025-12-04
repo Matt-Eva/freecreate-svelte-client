@@ -2,17 +2,12 @@
 	let { children, data } = $props();
 	import { setContext } from 'svelte';
 	import { setUser, getUser } from '../state/user.svelte.js';
+	import { setSearch, getSearch } from '../state/search.svelte.js';
 
 	setUser(data.user);
 	let user = getUser();
-	$inspect(user);
 
-	let searchState = $state({
-		writingType: 'All Writing',
-		datePosted: 'All Time',
-		tags: []
-	});
-	setContext('searchState', searchState);
+	setSearch();
 
 	let userCreators = $state({ creators: [], isFetched: false });
 	setContext('userCreators', userCreators);
