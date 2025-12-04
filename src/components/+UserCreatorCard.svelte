@@ -10,7 +10,6 @@
 				credentials: 'include'
 			});
 			if (res.ok) {
-				console.log(res);
 				userCreators.creators = userCreators.creators.filter((c) => c.id !== creator.id);
 			}
 		} catch (e) {
