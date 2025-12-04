@@ -2,7 +2,7 @@
 	import BrowseBar from '../components/+BrowseBar.svelte';
 	import ExploreSection from '../components/+ExploreSection.svelte';
 	import ExploreCard from '../components/+ExploreCard.svelte';
-	import { getTestState, updateTestState } from './store.svelte';
+	import { getTestState, updateTestState } from '../state/test.svelte';
 
 	let testState = getTestState();
 	$inspect(testState);
