@@ -37,6 +37,7 @@
 
 	let deletePopup;
 	let creatorName = $state('');
+	let addCreatorErrors = $state([]);
 
 	async function logout() {
 		try {
@@ -97,6 +98,14 @@
 				console.log(data);
 				addUserCreator(data);
 				creatorName = '';
+				addCreatorErrors = [];
+			} else if (res.status === 409) {
+				console.log(res);
+				const message = 'you cannot create two creators with the same name';
+				const exists = addCreatorErrors.find((error) => error === message);
+				if (!exists) {
+					addCreatorErrors.push(message);
+				}
 			}
 		} catch (error) {
 			console.error(error);
@@ -116,6 +125,11 @@
 	<form onsubmit={createCreator}>
 		<label for="new-creator">Add New Creator Profile</label>
 		<input type="text" name="new-creator" bind:value={creatorName} />
+		<p>
+			{#each addCreatorErrors as error}
+				<span>{error}</span>
+			{/each}
+		</p>
 		<input type="submit" value="create" />
 	</form>
 	{#each userCreators.creators as creator}
