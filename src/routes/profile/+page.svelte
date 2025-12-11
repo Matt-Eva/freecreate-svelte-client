@@ -106,9 +106,13 @@
 				if (!exists) {
 					addCreatorErrors.push(message);
 				}
+			} else if (!res.ok) {
+				const error = await res.text();
+				console.log(error);
 			}
 		} catch (error) {
-			console.error(error);
+			// console.log(error.message);
+			// console.error(error);
 		}
 	}
 </script>

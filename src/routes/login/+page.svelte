@@ -31,7 +31,7 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ email: '' })
+				body: JSON.stringify({ email: loginEmail })
 			});
 			if (res.ok) {
 				loginUser();
@@ -61,7 +61,7 @@
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					email: '',
+					email: signupEmail,
 					birthDay: parseInt(birthDay),
 					birthMonth: parseInt(birthMonth),
 					birthYear: parseInt(birthYear)
@@ -72,6 +72,7 @@
 				goto('/profile');
 			}
 		} catch (error) {
+			console.log(error.message);
 			console.error(error);
 		}
 	}
@@ -81,7 +82,7 @@
 	{#if user.loggedIn !== true}
 		<form onsubmit={login}>
 			<label for="email">Login with an email One Time Password</label>
-			<input type="text" name="email" placeholder="email@example.com" />
+			<input type="text" name="email" placeholder="email@example.com" bind:value={loginEmail} />
 			<input type="submit" value="send code" />
 		</form>
 		<form onsubmit={signup}>
