@@ -13,7 +13,7 @@ export function getUserCreators() {
 
 export function populateUserCreators(creators) {
 	userCreators.creators = creators;
-	userCreators.loggedIn = true;
+	userCreators.isFetched = true;
 }
 
 export function addUserCreator(creator) {
@@ -27,4 +27,16 @@ export function removeUserCreator(creatorId) {
 export function clearUserCreators() {
 	userCreators.creators = [];
 	userCreators.isFetched = false;
+}
+
+export async function fetchUserCreators(apiBase) {
+	try {
+		const res = await fetch(apiBase + '/user-creators', { credentials: 'include' });
+		if (res.ok) {
+			const data = await res.json();
+			populateUserCreators(data.creators);
+		}
+	} catch (error) {
+		console.error(error);
+	}
 }

@@ -1,9 +1,28 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
+	import { getUser } from '../../state/user.svelte';
+	import { fetchUserCreators, getUserCreators } from '../../state/userCreators.svelte';
+
+	const { data } = $props();
+	const apiBase = data.apiBase;
+
+	let user = getUser();
+	let userCreators = getUserCreators();
+
+	if (browser && user.loggedIn) {
+		if (!userCreators.isFetched) {
+			fetchUserCreators(apiBase);
+		}
+	} else if (browser) {
+		goto('/login');
+	}
+
 	function handleSubmit(e) {
 		e.preventDefault();
 		goto('/edit-writing');
 	}
+	$inspect(userCreators.creators);
 </script>
 
 <form onsubmit={handleSubmit}>
@@ -11,8 +30,9 @@
 	<input type="text" name="title" />
 	<label for="creator">Creator *</label>
 	<select name="creator">
-		<option>example</option>
-		<option>example two</option>
+		{#each userCreators.creators as creator}
+			<option>{creator.name}</option>
+		{/each}
 	</select>
 	<label for="new-profile">Haven't made a creator profile?</label>
 	<button name="new-profile">Make one now!</button>

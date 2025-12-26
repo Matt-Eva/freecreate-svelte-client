@@ -34,7 +34,7 @@
 					<a href="/">Browse</a>
 				</li>
 
-				<li><a href="/write">Write</a></li>
+				<li><a href="/new-writing">Write</a></li>
 				<li><a href="/my-writing">My Writing</a></li>
 				<li>
 					<a href="/my-library">My Library</a>
