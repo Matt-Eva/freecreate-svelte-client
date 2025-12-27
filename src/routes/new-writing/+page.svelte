@@ -61,6 +61,7 @@
 			await res;
 			if (res.ok) {
 				console.log('successful request to create writing');
+				return 'demo';
 			}
 		} catch (e) {
 			throw new Error(e);
