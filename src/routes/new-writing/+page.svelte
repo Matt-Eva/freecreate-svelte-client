@@ -13,12 +13,33 @@
 	let title = $state('');
 	let creatorId = $state();
 	let description = $state('');
-	let genres = $state([]);
+	const startingGenreState = {
+		'no-genre': { checked: true, disabled: false },
+		action: { checked: false, disabled: false },
+		adventure: { checked: false, disabled: false },
+		comedy: { checked: false, disabled: false },
+		drama: { checked: false, disabled: false },
+		fantasy: { checked: false, disabled: false },
+		'historical-fiction': { checked: false, disabled: false },
+		horror: { checked: false, disabled: false },
+		'literary-fiction': { checked: false, disabled: false },
+		'magical-realism': { checked: false, disabled: false },
+		realism: { checked: false, disabled: false },
+		romance: { checked: false, disabled: false },
+		'science-fiction': { checked: false, disabled: false },
+		'speculative-fiction': { checked: false, disabled: false },
+		'social-fiction': { checked: false, disabled: false },
+		supernatural: { checked: false, disabled: false },
+		thriller: { checked: false, disabled: false }
+	};
+	let genres = $state(startingGenreState);
+	const startingGenreTagState = ['no-genre'];
+	let genreQuantity = $state(0);
+	let genreTags = $state(startingGenreTagState);
 	let tags = $state([]);
+	let tagInput = $state('');
 
-	$inspect(title);
-	$inspect(creatorId);
-	$inspect(description);
+	$inspect(genreTags);
 
 	if (browser && user.loggedIn) {
 		if (!userCreators.isFetched) {
@@ -28,9 +49,16 @@
 		goto('/login');
 	}
 
-	async function handleSubmit(e) {
+	async function addTag(e) {
 		e.preventDefault();
+		for (let i = 0; i < tagInput.length; i++) {
+			if (tagInput[i] === ' ') {
+				console.log('-');
+			}
+		}
+	}
 
+	async function handleSubmit(e) {
 		if (title !== '' && creatorId) {
 			try {
 				const writingUUID = await createWriting();
@@ -42,11 +70,11 @@
 	}
 
 	async function createWriting() {
+		const tags = [...tags, ...genreTags];
 		const body = {
 			title,
 			creatorId,
 			description,
-			genres,
 			tags
 		};
 		try {
@@ -67,9 +95,42 @@
 			throw new Error(e);
 		}
 	}
+
+	function updateGenres(e) {
+		if (e.target.name === 'no-genre') {
+			genres = startingGenreState;
+		} else {
+			if (e.target.checked) {
+				genres[e.target.name].checked = true;
+				genres['no-genre'].checked = false;
+				genreQuantity += 1;
+				if (genreQuantity >= 3) {
+					for (const key in genres) {
+						if (!genres[key].checked) genres[key].disabled = true;
+					}
+				}
+
+				const existing = genreTags.find((tag) => tag === e.target.name);
+				if (!existing) {
+					genreTags.push(e.target.name);
+					genreTags.sort();
+				}
+			} else {
+				genres[e.target.name].checked = false;
+				genreQuantity -= 1;
+				for (const key in genres) {
+					if (!genres[key].checked) genres[key].disabled = false;
+				}
+				if (genreQuantity <= 0) {
+					genres['no-genre'].checked = true;
+				}
+				genreTags = genreTags.filter((tag) => tag !== e.target.name);
+			}
+		}
+	}
 </script>
 
-<form onsubmit={handleSubmit}>
+<div>
 	<label for="title">Title *</label>
 	<input type="text" name="title" bind:value={title} />
 	<label for="creator">Creator *</label>
@@ -84,47 +145,151 @@
 	<textarea name="description" bind:value={description}></textarea>
 	<label for="genre-box">Genres (Optional - select up to three)</label>
 	<div name="genre-box">
-		<input type="checkbox" name="no" />
+		<input
+			type="checkbox"
+			name="no-genre"
+			onchange={updateGenres}
+			bind:checked={genres['no-genre'].checked}
+		/>
 		<label for="no">No Genre</label>
-		<input type="checkbox" name="action" />
+		<input
+			type="checkbox"
+			name="action"
+			onchange={updateGenres}
+			bind:checked={genres.action.checked}
+			disabled={genres.action.disabled}
+		/>
 		<label for="action">Action</label>
-		<input type="checkbox" name="adventure" />
+		<input
+			type="checkbox"
+			name="adventure"
+			onchange={updateGenres}
+			bind:checked={genres.adventure.checked}
+			disabled={genres.adventure.disabled}
+		/>
 		<label for="adventure">Adventure</label>
-		<input type="checkbox" name="comedy" />
+		<input
+			type="checkbox"
+			name="comedy"
+			onchange={updateGenres}
+			bind:checked={genres.comedy.checked}
+			disabled={genres.comedy.disabled}
+		/>
 		<label for="comedy">Comedy</label>
-		<input type="checkbox" name="drama" />
+		<input
+			type="checkbox"
+			name="drama"
+			onchange={updateGenres}
+			bind:checked={genres.drama.checked}
+			disabled={genres.drama.disabled}
+		/>
 		<label for="drama">Drama</label>
-		<input type="checkbox" name="fantasy" />
+		<input
+			type="checkbox"
+			name="fantasy"
+			onchange={updateGenres}
+			bind:checked={genres.fantasy.checked}
+			disabled={genres.fantasy.disabled}
+		/>
 		<label for="fantasy">Fantasy</label>
-		<input type="checkbox" name="historical" />
+		<input
+			type="checkbox"
+			name="historical-fiction"
+			onchange={updateGenres}
+			bind:checked={genres['historical-fiction'].checked}
+			disabled={genres['historical-fiction'].disabled}
+		/>
 		<label for="historical">Historical Fiction</label>
-		<input type="checkbox" name="horror" />
+		<input
+			type="checkbox"
+			name="horror"
+			onchange={updateGenres}
+			bind:checked={genres.horror.checked}
+			disabled={genres.horror.disabled}
+		/>
 		<label for="horror">Horror</label>
-		<input type="checkbox" name="literary" />
+		<input
+			type="checkbox"
+			name="literary-fiction"
+			onchange={updateGenres}
+			bind:checked={genres['literary-fiction'].checked}
+			disabled={genres['literary-fiction'].disabled}
+		/>
 		<label for="literary">Literary Fiction</label>
-		<input type="checkbox" name="Magical Realism" />
-		<label for="Magical Realism">Magical Realism</label>
-		<input type="checkbox" name="realism" />
+		<input
+			type="checkbox"
+			name="magical-realism"
+			onchange={updateGenres}
+			bind:checked={genres['magical-realism'].checked}
+			disabled={genres['magical-realism'].disabled}
+		/>
+		<label for="magicalRealism">Magical Realism</label>
+		<input
+			type="checkbox"
+			name="realism"
+			onchange={updateGenres}
+			bind:checked={genres['realism'].checked}
+			disabled={genres.realism.disabled}
+		/>
 		<label for="realism">Realism</label>
-		<input type="checkbox" name="science" />
-		<input type="checkbox" name="romance" />
+		<input
+			type="checkbox"
+			name="romance"
+			onchange={updateGenres}
+			bind:checked={genres['romance'].checked}
+			disabled={genres.romance.disabled}
+		/>
 		<label for="romance">Romance</label>
+		<input
+			type="checkbox"
+			name="science-fiction"
+			onchange={updateGenres}
+			bind:checked={genres['science-fiction'].checked}
+			disabled={genres['science-fiction'].disabled}
+		/>
 		<label for="science">Science Fiction</label>
-		<input type="checkbox" name="social" />
-		<input type="checkbox" name="speculative" />
-		<label for="speculative">Speculative Fiction</label>
+		<input
+			type="checkbox"
+			name="speculative-fiction"
+			onchange={updateGenres}
+			bind:checked={genres['speculative-fiction'].checked}
+			disabled={genres['speculative-fiction'].disabled}
+		/>
+		<label for="speculativeFiction">Speculative Fiction</label>
+		<input
+			type="checkbox"
+			name="social-fiction"
+			onchange={updateGenres}
+			bind:checked={genres['social-fiction'].checked}
+			disabled={genres['social-fiction'].disabled}
+		/>
 		<label for="social">Social Fiction</label>
-		<input type="checkbox" name="supernatural" />
+		<input
+			type="checkbox"
+			name="supernatural"
+			onchange={updateGenres}
+			bind:checked={genres.supernatural.checked}
+			disabled={genres.supernatural.disabled}
+		/>
 		<label for="supernatural">Supernatural</label>
-		<input type="checkbox" name="thriller" />
+		<input
+			type="checkbox"
+			name="thriller"
+			onchange={updateGenres}
+			bind:checked={genres.thriller.checked}
+			disabled={genres.thriller.disabled}
+		/>
 		<label for="thriller">Thriller</label>
 	</div>
-	<label for="tags">Add Tags (Optional - add up to twenty)</label>
-	<input name="tags" type="text" />
+	<form onsubmit={addTag}>
+		<label for="tags">Add Tags (Optional - add up to twenty)</label>
+		<input name="tags" type="text" bind:value={tagInput} />
+		<input type="submit" value="add tag" />
+	</form>
 	<div></div>
 	{#if title !== '' && creatorId}
-		<input type="submit" value="create" />
+		<button onclick={handleSubmit}>create</button>
 	{:else}
-		<input type="submit" value="create" disabled={true} />
+		<button disabled="true">create</button>
 	{/if}
-</form>
+</div>
