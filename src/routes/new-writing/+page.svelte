@@ -10,6 +10,16 @@
 	let user = getUser();
 	let userCreators = getUserCreators();
 
+	let title = $state('');
+	let creatorId = $state();
+	let description = $state('');
+	let genres = $state([]);
+	let tags = $state([]);
+
+	$inspect(title);
+	$inspect(creatorId);
+	$inspect(description);
+
 	if (browser && user.loggedIn) {
 		if (!userCreators.isFetched) {
 			fetchUserCreators(apiBase);
@@ -18,27 +28,60 @@
 		goto('/login');
 	}
 
-	function handleSubmit(e) {
+	async function handleSubmit(e) {
 		e.preventDefault();
-		goto('/edit-writing');
+
+		if (title !== '' && creatorId) {
+			try {
+				const writingUUID = await createWriting();
+				goto(`/edit-writing/${writingUUID}`);
+			} catch (e) {
+				console.error(e);
+			}
+		}
 	}
-	$inspect(userCreators.creators);
+
+	async function createWriting() {
+		const body = {
+			title,
+			creatorId,
+			description,
+			genres,
+			tags
+		};
+		try {
+			const res = await fetch(apiBase + '/writing', {
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			});
+			await res;
+			if (res.ok) {
+				console.log('successful request to create writing');
+			}
+		} catch (e) {
+			throw new Error(e);
+		}
+	}
 </script>
 
 <form onsubmit={handleSubmit}>
 	<label for="title">Title *</label>
-	<input type="text" name="title" />
+	<input type="text" name="title" bind:value={title} />
 	<label for="creator">Creator *</label>
-	<select name="creator">
+	<select name="creator" bind:value={creatorId}>
 		{#each userCreators.creators as creator}
-			<option>{creator.name}</option>
+			<option value={creator.id}>{creator.name}</option>
 		{/each}
 	</select>
 	<label for="new-profile">Haven't made a creator profile?</label>
 	<button name="new-profile">Make one now!</button>
-	<label for="description">Description (1000 characters max)</label>
-	<textarea name="description"></textarea>
-	<label for="genre-box">Genres (select up to three)</label>
+	<label for="description">Description (Optional - 1000 characters max)</label>
+	<textarea name="description" bind:value={description}></textarea>
+	<label for="genre-box">Genres (Optional - select up to three)</label>
 	<div name="genre-box">
 		<input type="checkbox" name="no" />
 		<label for="no">No Genre</label>
@@ -75,8 +118,12 @@
 		<input type="checkbox" name="thriller" />
 		<label for="thriller">Thriller</label>
 	</div>
-	<label for="tags">Add Tags (up to twenty)</label>
+	<label for="tags">Add Tags (Optional - add up to twenty)</label>
 	<input name="tags" type="text" />
 	<div></div>
-	<input type="submit" value="create" />
+	{#if title !== '' && creatorId}
+		<input type="submit" value="create" />
+	{:else}
+		<input type="submit" value="create" disabled={true} />
+	{/if}
 </form>
