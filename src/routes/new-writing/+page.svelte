@@ -144,7 +144,7 @@
 		}
 	}
 
-	async function addTag(e) {
+	function addTag(e) {
 		e.preventDefault();
 		console.log('adding tag');
 		// if (tagInput !== '') {
@@ -164,6 +164,11 @@
 		// } else {
 		// }
 		tagInput = '';
+	}
+
+	function deleteTag(e) {
+		console.log(e.target.textContent);
+		tags = tags.filter((tag) => tag !== e.target.textContent);
 	}
 </script>
 
@@ -328,7 +333,11 @@
 		/>
 		<input type="submit" value="add tag" disabled={disableTagSubmit} />
 	</form>
-	<div></div>
+	<div>
+		{#each tags as tag}
+			<button onclick={deleteTag}>{tag}</button>
+		{/each}
+	</div>
 	{#if title !== '' && creatorId}
 		<button onclick={handleSubmit}>create</button>
 	{:else}
