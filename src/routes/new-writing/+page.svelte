@@ -40,8 +40,7 @@
 	let tagInput = $state('');
 	let disableTagInput = $state(false);
 	let disableTagSubmit = $state(true);
-	$inspect(tagInput);
-	$inspect(tags);
+	let writingType = $state('');
 
 	if (browser && user.loggedIn) {
 		if (!userCreators.isFetched) {
@@ -59,7 +58,8 @@
 				title,
 				creatorId,
 				description,
-				tags: tagsAndGenres
+				tags: tagsAndGenres,
+				writingType
 			};
 
 			try {
@@ -74,7 +74,7 @@
 				if (res.ok) {
 					const data = await res.json();
 					const writingUUID = data.writingUUID;
-					//	goto(`/edit-writing/${writingUUID}`);
+					goto(`/edit-writing/${writingUUID}`);
 				} else {
 					const error = await res.text();
 					throw new Error(error);
@@ -180,6 +180,16 @@
 	</select>
 	<label for="new-profile">Haven't made a creator profile?</label>
 	<button name="new-profile">Make one now!</button>
+	<label for="writing-type">Writing Type *</label>
+	<select name="writing-type" bind:value={writingType}>
+		<option>Essay</option>
+		<option>Blog</option>
+		<option>Poetry</option>
+		<option>Short Story</option>
+		<option>Novellette</option>
+		<option>Novella</option>
+		<option>Novel</option>
+	</select>
 	<label for="description">Description (Optional - 1000 characters max)</label>
 	<textarea name="description" bind:value={description}></textarea>
 	<label for="genre-box">Genres (Optional - select up to three)</label>
@@ -335,7 +345,7 @@
 			<button onclick={deleteTag}>{tag}</button>
 		{/each}
 	</div>
-	{#if title !== '' && creatorId}
+	{#if title !== '' && creatorId && writingType !== ''}
 		<button onclick={createWriting}>create</button>
 	{:else}
 		<button disabled="true">create</button>
