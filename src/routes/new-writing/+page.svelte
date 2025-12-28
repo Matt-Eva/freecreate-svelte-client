@@ -38,8 +38,10 @@
 	let genreTags = $state(startingGenreTagState);
 	let tags = $state([]);
 	let tagInput = $state('');
-
-	$inspect(genreTags);
+	let disableTagInput = $state(false);
+	let disableTagSubmit = $state(true);
+	$inspect(tagInput);
+	$inspect(tags);
 
 	if (browser && user.loggedIn) {
 		if (!userCreators.isFetched) {
@@ -47,15 +49,6 @@
 		}
 	} else if (browser) {
 		goto('/login');
-	}
-
-	async function addTag(e) {
-		e.preventDefault();
-		for (let i = 0; i < tagInput.length; i++) {
-			if (tagInput[i] === ' ') {
-				console.log('-');
-			}
-		}
 	}
 
 	async function handleSubmit(e) {
@@ -99,6 +92,7 @@
 	function updateGenres(e) {
 		if (e.target.name === 'no-genre') {
 			genres = startingGenreState;
+			genreQuantity = 0;
 		} else {
 			if (e.target.checked) {
 				genres[e.target.name].checked = true;
@@ -127,6 +121,49 @@
 				genreTags = genreTags.filter((tag) => tag !== e.target.name);
 			}
 		}
+	}
+
+	function handleTagInput(v) {
+		if (v.length <= 50) {
+			let newStr = '';
+			for (let i = 0; i < v.length; i++) {
+				if (v[i] === ' ') {
+					newStr += '-';
+				} else {
+					newStr += v[i].toLowerCase();
+				}
+			}
+			tagInput = newStr;
+		} else {
+			console.log('tag cannot exceed 50 characters');
+		}
+		if (tagInput !== '') {
+			disableTagSubmit = false;
+		} else {
+			disableTagInput = true;
+		}
+	}
+
+	async function addTag(e) {
+		e.preventDefault();
+		console.log('adding tag');
+		// if (tagInput !== '') {
+		if (tags.length < 19) {
+			const existing = tags.find((tag) => tag === tagInput);
+			if (!existing) {
+				tags.push(tagInput);
+			}
+		} else if (tags.length === 19) {
+			const existing = tags.find((tag) => tag === tagInput);
+			if (!existing) {
+				tags.push(tagInput);
+			}
+			disableTagInput = true;
+		}
+		disableTagSubmit = true;
+		// } else {
+		// }
+		tagInput = '';
 	}
 </script>
 
@@ -282,9 +319,14 @@
 		<label for="thriller">Thriller</label>
 	</div>
 	<form onsubmit={addTag}>
-		<label for="tags">Add Tags (Optional - add up to twenty)</label>
-		<input name="tags" type="text" bind:value={tagInput} />
-		<input type="submit" value="add tag" />
+		<label for="tags">Add Tags (Optional - add up to twenty - 50 characters max)</label>
+		<input
+			name="tags"
+			type="text"
+			bind:value={() => tagInput, handleTagInput}
+			disabled={disableTagInput}
+		/>
+		<input type="submit" value="add tag" disabled={disableTagSubmit} />
 	</form>
 	<div></div>
 	{#if title !== '' && creatorId}
