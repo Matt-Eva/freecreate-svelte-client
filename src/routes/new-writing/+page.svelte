@@ -51,41 +51,37 @@
 		goto('/login');
 	}
 
-	async function handleSubmit(e) {
+	async function createWriting() {
 		if (title !== '' && creatorId) {
+			const tagsAndGenres = [...tags, ...genreTags];
+
+			const body = {
+				title,
+				creatorId,
+				description,
+				tags: tagsAndGenres
+			};
+
 			try {
-				const writingUUID = await createWriting();
-				goto(`/edit-writing/${writingUUID}`);
+				const res = await fetch(apiBase + '/writing', {
+					method: 'POST',
+					credentials: 'include',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(body)
+				});
+				if (res.ok) {
+					const data = await res.json();
+					const writingUUID = data.writingUUID;
+					//	goto(`/edit-writing/${writingUUID}`);
+				} else {
+					const error = await res.text();
+					throw new Error(error);
+				}
 			} catch (e) {
 				console.error(e);
 			}
-		}
-	}
-
-	async function createWriting() {
-		const tags = [...tags, ...genreTags];
-		const body = {
-			title,
-			creatorId,
-			description,
-			tags
-		};
-		try {
-			const res = await fetch(apiBase + '/writing', {
-				method: 'POST',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(body)
-			});
-			await res;
-			if (res.ok) {
-				console.log('successful request to create writing');
-				return 'demo';
-			}
-		} catch (e) {
-			throw new Error(e);
 		}
 	}
 
@@ -93,7 +89,9 @@
 		if (e.target.name === 'no-genre') {
 			genres = startingGenreState;
 			genreQuantity = 0;
+			genreTags = ['no-genre'];
 		} else {
+			genreTags = genreTags.filter((tag) => tag !== 'no-genre');
 			if (e.target.checked) {
 				genres[e.target.name].checked = true;
 				genres['no-genre'].checked = false;
@@ -117,6 +115,7 @@
 				}
 				if (genreQuantity <= 0) {
 					genres['no-genre'].checked = true;
+					genreTags = ['no-genre'];
 				}
 				genreTags = genreTags.filter((tag) => tag !== e.target.name);
 			}
@@ -146,8 +145,7 @@
 
 	function addTag(e) {
 		e.preventDefault();
-		console.log('adding tag');
-		// if (tagInput !== '') {
+
 		if (tags.length < 19) {
 			const existing = tags.find((tag) => tag === tagInput);
 			if (!existing) {
@@ -161,8 +159,7 @@
 			disableTagInput = true;
 		}
 		disableTagSubmit = true;
-		// } else {
-		// }
+
 		tagInput = '';
 	}
 
@@ -339,7 +336,7 @@
 		{/each}
 	</div>
 	{#if title !== '' && creatorId}
-		<button onclick={handleSubmit}>create</button>
+		<button onclick={createWriting}>create</button>
 	{:else}
 		<button disabled="true">create</button>
 	{/if}
