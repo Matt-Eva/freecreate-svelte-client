@@ -3,6 +3,7 @@
 	import { browser } from '$app/environment';
 	import { getUser } from '../../../state/user.svelte';
 	import { fetchUserCreators, getUserCreators } from '../../../state/userCreators.svelte';
+	import GenreSelect from './GenreSelect.svelte';
 
 	const { data } = $props();
 	const apiBase = data.apiBase;
@@ -48,8 +49,24 @@
 		if (!userCreators.isFetched) {
 			fetchUserCreators(apiBase);
 		}
+		loadWriting();
 	} else if (browser) {
 		goto('/login');
+	}
+
+	async function loadWriting() {
+		try {
+			const res = await fetch(apiBase + `/edit-writing/${writingUUID}`, { credentials: 'include' });
+			if (res.ok) {
+				const data = await res.json();
+				console.log(data);
+			} else {
+				const error = await res.text();
+				throw new Error(error);
+			}
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
 	async function saveWriting() {
@@ -193,6 +210,7 @@
 	<label for="description">Description (Optional - 1000 characters max)</label>
 	<textarea name="description" bind:value={description}></textarea>
 	<label for="genre-box">Genres (Optional - select up to three)</label>
+	<!-- <GenreSelect /> -->
 	<div name="genre-box">
 		<input
 			type="checkbox"
