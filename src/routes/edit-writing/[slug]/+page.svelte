@@ -16,7 +16,7 @@
 	let tagInput = $state('');
 	let disableTagInput = $state(false);
 	let disableTagSubmit = $state(true);
-	let writingType = $state('Essay');
+	let writingType = $state('Poetry');
 	const startingGenreTagState = ['no-genre'];
 	let genreTags = $state(startingGenreTagState);
 	let genreQuantity = $state(0);
@@ -51,7 +51,7 @@
 		goto('/login');
 	}
 
-	async function createWriting() {
+	async function saveWriting() {
 		if (title !== '' && creatorId) {
 			const tagsAndGenres = [...tags, ...genreTags];
 
@@ -65,7 +65,7 @@
 
 			try {
 				const res = await fetch(apiBase + '/writing', {
-					method: 'POST',
+					method: 'PATCH',
 					credentials: 'include',
 					headers: {
 						'Content-Type': 'application/json'
@@ -74,8 +74,6 @@
 				});
 				if (res.ok) {
 					const data = await res.json();
-					const writingUUID = data.writingUUID;
-					goto(`/edit-writing/${writingUUID}`);
 				} else {
 					const error = await res.text();
 					throw new Error(error);
@@ -183,9 +181,9 @@
 	<a name="new-profile" href="/profile">Make one now!</a>
 	<label for="writing-type">Writing Type *</label>
 	<select name="writing-type" bind:value={writingType}>
+		<option>Poetry</option>
 		<option>Essay</option>
 		<option>Blog</option>
-		<option>Poetry</option>
 		<option>Short Story</option>
 		<option>Novellette</option>
 		<option>Novella</option>
