@@ -9,10 +9,17 @@
 
 	let user = getUser();
 	let userCreators = getUserCreators();
-
 	let title = $state('');
 	let creatorId = $state();
 	let description = $state('');
+	let tags = $state([]);
+	let tagInput = $state('');
+	let disableTagInput = $state(false);
+	let disableTagSubmit = $state(true);
+	let writingType = $state('Essay');
+	const startingGenreTagState = ['no-genre'];
+	let genreTags = $state(startingGenreTagState);
+	let genreQuantity = $state(0);
 	const startingGenreState = {
 		'no-genre': { checked: true, disabled: false },
 		action: { checked: false, disabled: false },
@@ -33,14 +40,8 @@
 		thriller: { checked: false, disabled: false }
 	};
 	let genres = $state(startingGenreState);
-	const startingGenreTagState = ['no-genre'];
-	let genreQuantity = $state(0);
-	let genreTags = $state(startingGenreTagState);
-	let tags = $state([]);
-	let tagInput = $state('');
-	let disableTagInput = $state(false);
-	let disableTagSubmit = $state(true);
-	let writingType = $state('');
+
+	$inspect(creatorId);
 
 	if (browser && user.loggedIn) {
 		if (!userCreators.isFetched) {
@@ -179,7 +180,7 @@
 		{/each}
 	</select>
 	<label for="new-profile">Haven't made a creator profile?</label>
-	<button name="new-profile">Make one now!</button>
+	<a name="new-profile" href="/profile">Make one now!</a>
 	<label for="writing-type">Writing Type *</label>
 	<select name="writing-type" bind:value={writingType}>
 		<option>Essay</option>
@@ -190,7 +191,7 @@
 		<option>Novella</option>
 		<option>Novel</option>
 	</select>
-	<label for="description">Description (Optional - 1000 characters max)</label>
+	<!-- <label for="description">Description (Optional - 1000 characters max)</label>
 	<textarea name="description" bind:value={description}></textarea>
 	<label for="genre-box">Genres (Optional - select up to three)</label>
 	<div name="genre-box">
@@ -344,7 +345,7 @@
 		{#each tags as tag}
 			<button onclick={deleteTag}>{tag}</button>
 		{/each}
-	</div>
+	</div> -->
 	{#if title !== '' && creatorId && writingType !== ''}
 		<button onclick={createWriting}>create</button>
 	{:else}
