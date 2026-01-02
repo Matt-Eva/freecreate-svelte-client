@@ -4,6 +4,7 @@
 	import { getUser } from '../../../state/user.svelte';
 	import { fetchUserCreators, getUserCreators } from '../../../state/userCreators.svelte';
 	import GenreSelect from './GenreSelect.svelte';
+	import Test from './Test.svelte';
 
 	const { data } = $props();
 	const apiBase = data.apiBase;
@@ -184,9 +185,15 @@
 		console.log(e.target.textContent);
 		tags = tags.filter((tag) => tag !== e.target.textContent);
 	}
+
+	let testState = $state({
+		myVal: 'starting'
+	});
 </script>
 
 <div>
+	<Test bind:testState />
+	<p>{testState.myVal}</p>
 	<label for="title">Title *</label>
 	<input type="text" name="title" bind:value={title} />
 	<label for="creator">Creator *</label>
