@@ -25,8 +25,6 @@
 
 	async function createWriting() {
 		if (title !== '' && creatorId) {
-			const tagsAndGenres = [...tags, ...genreTags];
-
 			const body = {
 				title,
 				creatorId,

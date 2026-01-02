@@ -6,6 +6,7 @@
 
 	const { data } = $props();
 	const apiBase = data.apiBase;
+	const writingUUID = data.writingUUID;
 
 	let user = getUser();
 	let userCreators = getUserCreators();
