@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { getUser } from '../../state/user.svelte';
+	import WritingCard from './WritingCard.svelte';
 
 	const { data } = $props();
 	const apiBase = data.apiBase;
@@ -42,13 +43,7 @@
 			<p>you haven't created any writing yet.</p>
 		{:else}
 			{#each myWriting.writing as writing}
-				<p>{writing.title}</p>
-				<a href={`/edit-writing/${writing.writingUUID}`}>edit</a>
-				{#if writing.isPublished}
-					<p>published</p>
-				{:else}
-					<p>draft</p>
-				{/if}
+				<WritingCard {writing} />
 			{/each}
 		{/if}
 	{/if}

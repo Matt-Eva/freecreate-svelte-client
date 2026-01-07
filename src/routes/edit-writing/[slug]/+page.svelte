@@ -19,6 +19,7 @@
 	let description = $state('');
 	let tags = $state([]);
 	let genreTags = $state([]);
+	let topicTags = $state([]);
 
 	$inspect(tags);
 
@@ -38,6 +39,10 @@
 				const data = await res.json();
 				console.log(data);
 				genreTags = data.tags;
+				creatorId = data.creatorId;
+				title = data.title;
+				writingType = data.writingType;
+				description = data.description;
 			} else {
 				const error = await res.text();
 				throw new Error(error);
@@ -49,7 +54,7 @@
 
 	async function saveWriting() {
 		if (title !== '' && creatorId) {
-			const tagsAndGenres = [...tags, ...genreTags];
+			let combinedTags = tags;
 
 			const body = {
 				title,

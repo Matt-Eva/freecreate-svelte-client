@@ -3,9 +3,8 @@
 	import { getSearch } from '../state/search.svelte';
 	let writingType = $state('All Writing');
 	let datePost = $state('All Time');
-	$inspect(writingType);
+
 	let searchState = getSearch();
-	$inspect(searchState);
 
 	function search() {
 		console.log('searching');
@@ -52,14 +51,13 @@
 			<label for="comedy">Comedy</label>
 			<input type="checkbox" name="drama" />
 			<label for="drama">Culture</label>
-			<input type="checkbox" name="fantasy" />
-			<label for="fantasy">Fiction</label>
+
 			<input type="checkbox" name="historical" />
-			<label for="historical">Historical Fiction</label>
+			<label for="historical">History</label>
 			<input type="checkbox" name="horror" />
 			<label for="horror">Horror</label>
 			<input type="checkbox" name="literary" />
-			<label for="literary">Literary Fiction</label>
+			<label for="literary">Fiction</label>
 			<input type="checkbox" name="Music" />
 			<label for="Musics">Music</label>
 			<input type="checkbox" name="realism" />
