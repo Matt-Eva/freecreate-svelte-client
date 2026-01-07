@@ -54,13 +54,22 @@
 
 	async function saveWriting() {
 		if (title !== '' && creatorId) {
-			let combinedTags = tags;
+			let combinedTags = [];
+			if (writingType === 'Poetry') {
+				combinedTags = tags;
+			} else if (writingType === 'Essay' || writingType === 'Blog') {
+				tagsAndTopics = [...tags, ...topicTags];
+				combinedTags = [...new Set(tagsAndTopics)];
+			} else if (writingType !== '') {
+				tagsAndGenres = [...tags, ...genreTags];
+				combinedTags = [...new Set(tagsAndGenres)];
+			}
 
 			const body = {
 				title,
 				creatorId,
 				description,
-				tags: tagsAndGenres,
+				tags: combinedTags,
 				writingType
 			};
 
