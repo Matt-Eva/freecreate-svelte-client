@@ -1,4 +1,5 @@
 <script>
+	import genreMap from '$lib/genreMap';
 	let { tags = $bindable() } = $props();
 
 	let tagInput = $state('');
@@ -22,12 +23,17 @@
 		if (tagInput !== '') {
 			disableTagSubmit = false;
 		} else {
-			disableTagInput = true;
+			disableTagSubmit = true;
 		}
 	}
 
 	function addTag(e) {
 		e.preventDefault();
+		if (genreMap[tagInput]) {
+			tagInput = '';
+			alert('genres cannot be added as tags');
+			return;
+		}
 
 		if (tags.length < 19) {
 			const existing = tags.find((tag) => tag === tagInput);
